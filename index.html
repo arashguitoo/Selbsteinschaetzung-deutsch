@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deutsch A2 - Selbsteinschätzung</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-block {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+
+        .question-text {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .option-btn:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+
+        .option-btn.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+
+        .category-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .summary-item {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .summary-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .summary-value {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            background: #95a5a6;
+            margin-top: 10px;
+        }
+
+        .download-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .success-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .nav-buttons button {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Meine Deutschkenntnisse</h1>
+        <p class="subtitle">Selbsteinschätzung</p>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <!-- Sektion 0: Name -->
+        <div class="section active" id="section0">
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">👤</span>Wie heißt du?</div>
+                <input type="text" id="studentName" class="input-field" placeholder="Dein Name">
+            </div>
+            <button class="btn" onclick="nextSection(0)">Weiter</button>
+        </div>
+
+        <!-- Sektion 1: Hörverstehen -->
+        <div class="section" id="section1">
+            <div class="category-title">🎧 Hörverstehen</div>
+            
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">👨‍🏫</span>Ich verstehe meinen Lehrer / meine Lehrerin im Unterricht</div>
+                <div class="options" id="q1"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">🗣️</span>Ich verstehe alltägliche Gespräche (im Supermarkt, auf der Straße)</div>
+                <div class="options" id="q2"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">📻</span>Ich verstehe einfache Nachrichten oder Videos auf Deutsch</div>
+                <div class="options" id="q3"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn back-btn" onclick="previousSection(1)">Zurück</button>
+                <button class="btn" onclick="nextSection(1)">Weiter</button>
+            </div>
+        </div>
+
+        <!-- Sektion 2: Leseverstehen -->
+        <div class="section" id="section2">
+            <div class="category-title">📖 Leseverstehen</div>
+            
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">📰</span>Ich verstehe einfache Texte (Schilder, Anzeigen, kurze Nachrichten)</div>
+                <div class="options" id="q4"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">📧</span>Ich verstehe E-Mails oder WhatsApp-Nachrichten auf Deutsch</div>
+                <div class="options" id="q5"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">📚</span>Ich lese gerne auf Deutsch (auch außerhalb des Unterrichts)</div>
+                <div class="options" id="q6"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn back-btn" onclick="previousSection(2)">Zurück</button>
+                <button class="btn" onclick="nextSection(2)">Weiter</button>
+            </div>
+        </div>
+
+        <!-- Sektion 3: Sprechen -->
+        <div class="section" id="section3">
+            <div class="category-title">💬 Sprechen</div>
+            
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">🗨️</span>Ich kann über mich und meine Familie sprechen</div>
+                <div class="options" id="q7"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">🛒</span>Ich kann im Geschäft einkaufen und Fragen stellen</div>
+                <div class="options" id="q8"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">😰</span>Ich habe Angst, Deutsch zu sprechen</div>
+                <div class="options" id="q9"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn back-btn" onclick="previousSection(3)">Zurück</button>
+                <button class="btn" onclick="nextSection(3)">Weiter</button>
+            </div>
+        </div>
+
+        <!-- Sektion 4: Schreiben -->
+        <div class="section" id="section4">
+            <div class="category-title">✍️ Schreiben</div>
+            
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">✉️</span>Ich kann kurze Nachrichten oder E-Mails schreiben</div>
+                <div class="options" id="q10"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">📝</span>Ich kann über meinen Tag oder mein Wochenende schreiben</div>
+                <div class="options" id="q11"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">📋</span>Ich kann Formulare ausfüllen</div>
+                <div class="options" id="q12"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn back-btn" onclick="previousSection(4)">Zurück</button>
+                <button class="btn" onclick="nextSection(4)">Weiter</button>
+            </div>
+        </div>
+
+        <!-- Sektion 5: Grammatik - Artikel -->
+        <div class="section" id="section5">
+            <div class="category-title">📐 Grammatik: Artikel</div>
+            
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">🔤</span>Ich kenne die richtigen Artikel (der, die, das)</div>
+                <div class="options" id="q13"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">📊</span>Ich kann Artikel verwenden (den, dem, des...)</div>
+                <div class="options" id="q14"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn back-btn" onclick="previousSection(5)">Zurück</button>
+                <button class="btn" onclick="nextSection(5)">Weiter</button>
+            </div>
+        </div>
+
+        <!-- Sektion 6: Grammatik - Modalverben -->
+        <div class="section" id="section6">
+            <div class="category-title">🎯 Grammatik: Modalverben</div>
+            
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">💪</span>Ich kann Modalverben verwenden (können, müssen, wollen, dürfen, sollen, möchten)</div>
+                <div class="options" id="q15"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">🎓</span>Ich verstehe, wann ich welches Modalverb benutze</div>
+                <div class="options" id="q16"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn back-btn" onclick="previousSection(6)">Zurück</button>
+                <button class="btn" onclick="nextSection(6)">Weiter</button>
+            </div>
+        </div>
+
+        <!-- Sektion 7: Grammatik - Akkusativ und Dativ -->
+        <div class="section" id="section7">
+            <div class="category-title">🎯 Grammatik: Akkusativ und Dativ (mit Lokalpräpositionen)</div>
+            
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">➡️</span>Ich erkenne, wann ich Akkusativ brauche (Wohin? Ich gehe IN DIE Schule)</div>
+                <div class="options" id="q17"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">⬅️</span>Ich erkenne, wann ich Dativ brauche (Wo? Ich bin IN DER Schule)</div>
+                <div class="options" id="q18"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">🤔</span>Akkusativ und Dativ sind schwierig für mich</div>
+                <div class="options" id="q19"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn back-btn" onclick="previousSection(7)">Zurück</button>
+                <button class="btn" onclick="nextSection(7)">Weiter</button>
+            </div>
+        </div>
+
+        <!-- Sektion 8: Grammatik - Zeitformen -->
+        <div class="section" id="section8">
+            <div class="category-title">⏰ Grammatik: Präsens und Perfekt</div>
+            
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">📅</span>Ich kann über die Gegenwart sprechen (Präsens: Ich gehe, ich esse)</div>
+                <div class="options" id="q20"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">⏮️</span>Ich kann über die Vergangenheit sprechen (Perfekt: Ich bin gegangen, ich habe gegessen)</div>
+                <div class="options" id="q21"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">🔄</span>Ich weiß, wann ich "haben" oder "sein" im Perfekt benutze</div>
+                <div class="options" id="q22"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn back-btn" onclick="previousSection(8)">Zurück</button>
+                <button class="btn" onclick="nextSection(8)">Weiter</button>
+            </div>
+        </div>
+
+        <!-- Sektion 9: Lernziele -->
+        <div class="section" id="section9">
+            <div class="category-title">🎯 Meine Lernziele</div>
+            
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">📚</span>Ich lerne gerne Deutsch</div>
+                <div class="options" id="q23"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">🏠</span>Ich übe auch zu Hause Deutsch</div>
+                <div class="options" id="q24"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">💪</span>Ich brauche mehr Unterstützung bei:</div>
+                <p style="color: #667eea; font-size: 14px; margin-bottom: 10px; font-weight: 600;">✓ Du kannst mehrere Antworten auswählen!</p>
+                <div class="options" id="q25"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">🚀</span>In Zukunft möchte ich daran arbeiten:</div>
+                <p style="color: #667eea; font-size: 14px; margin-bottom: 10px; font-weight: 600;">✓ Du kannst mehrere Antworten auswählen!</p>
+                <div class="options" id="q26"></div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text"><span class="emoji">📚</span>Wodurch lerne ich gut?</div>
+                <p style="color: #667eea; font-size: 14px; margin-bottom: 10px; font-weight: 600;">✓ Du kannst mehrere Antworten auswählen!</p>
+                <div class="options" id="q27"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn back-btn" onclick="previousSection(9)">Zurück</button>
+                <button class="btn" onclick="nextSection(9)">Weiter</button>
+            </div>
+        </div>
+
+        <!-- Sektion 10: Zusammenfassung -->
+        <div class="section" id="section10">
+            <div class="success-icon">✅</div>
+            <h2 style="text-align: center; color: #667eea; margin-bottom: 30px;">Fertig!</h2>
+            
+            <div id="summary"></div>
+            
+            <div class="download-section">
+                <button class="btn" onclick="downloadResults()">📥 Ergebnisse herunterladen</button>
+                <p style="margin-top: 15px; color: #666;">Bitte schicke die Datei an deinen Lehrer!</p>
+            </div>
+
+            <button class="btn back-btn" onclick="previousSection(10)">Zurück</button>
+        </div>
+    </div>
+
+    <script>
+        const answers = {};
+        let currentSection = 0;
+        const totalSections = 10;
+
+        const questions = {
+            q1: { type: 'frequency', question: 'Ich verstehe meinen Lehrer / meine Lehrerin im Unterricht' },
+            q2: { type: 'frequency', question: 'Ich verstehe alltägliche Gespräche' },
+            q3: { type: 'frequency', question: 'Ich verstehe einfache Nachrichten oder Videos' },
+            q4: { type: 'frequency', question: 'Ich verstehe einfache Texte' },
+            q5: { type: 'frequency', question: 'Ich verstehe E-Mails oder Nachrichten' },
+            q6: { type: 'frequency', question: 'Ich lese gerne auf Deutsch' },
+            q7: { type: 'ability', question: 'Ich kann über mich und meine Familie sprechen' },
+            q8: { type: 'ability', question: 'Ich kann im Geschäft einkaufen' },
+            q9: { type: 'agreement', question: 'Ich habe Angst, Deutsch zu sprechen' },
+            q10: { type: 'ability', question: 'Ich kann kurze Nachrichten schreiben' },
+            q11: { type: 'ability', question: 'Ich kann über meinen Tag schreiben' },
+            q12: { type: 'ability', question: 'Ich kann Formulare ausfüllen' },
+            q13: { type: 'ability', question: 'Ich kenne die richtigen Artikel' },
+            q14: { type: 'ability', question: 'Ich kann Artikel verwenden' },
+            q15: { type: 'ability', question: 'Ich kann Modalverben verwenden' },
+            q16: { type: 'ability', question: 'Ich verstehe, wann ich welches Modalverb benutze' },
+            q17: { type: 'ability', question: 'Ich erkenne Akkusativ (Wohin? IN DIE Schule)' },
+            q18: { type: 'ability', question: 'Ich erkenne Dativ (Wo? IN DER Schule)' },
+            q19: { type: 'agreement', question: 'Akkusativ und Dativ sind schwierig für mich' },
+            q20: { type: 'ability', question: 'Ich kann Präsens verwenden' },
+            q21: { type: 'ability', question: 'Ich kann Perfekt verwenden' },
+            q22: { type: 'ability', question: 'Ich weiß, wann ich haben/sein benutze' },
+            q23: { type: 'agreement', question: 'Ich lerne gerne Deutsch' },
+            q24: { type: 'frequency', question: 'Ich übe zu Hause' },
+            q25: { type: 'support', question: 'Ich brauche mehr Unterstützung bei' },
+            q26: { type: 'goals', question: 'In Zukunft möchte ich daran arbeiten' },
+            q27: { type: 'learning_methods', question: 'Wodurch lerne ich gut' }
+        };
+
+        const optionTypes = {
+            frequency: [
+                { text: 'Immer ⭐⭐⭐', value: 'immer', score: 5 },
+                { text: 'Oft ⭐⭐', value: 'oft', score: 4 },
+                { text: 'Manchmal ⭐', value: 'manchmal', score: 3 },
+                { text: 'Selten', value: 'selten', score: 2 },
+                { text: 'Nie', value: 'nie', score: 1 }
+            ],
+            ability: [
+                { text: 'Sehr gut ⭐⭐⭐', value: 'sehr_gut', score: 5 },
+                { text: 'Gut ⭐⭐', value: 'gut', score: 4 },
+                { text: 'Mittel ⭐', value: 'mittel', score: 3 },
+                { text: 'Schwierig', value: 'schwierig', score: 2 },
+                { text: 'Sehr schwierig', value: 'sehr_schwierig', score: 1 }
+            ],
+            agreement: [
+                { text: 'Stimmt genau', value: 'ja_sehr', score: 5 },
+                { text: 'Stimmt eher ja', value: 'ja', score: 4 },
+                { text: 'Manchmal', value: 'manchmal', score: 3 },
+                { text: 'Stimmt eher nein', value: 'nein', score: 2 },
+                { text: 'Stimmt gar nicht', value: 'nein_sehr', score: 1 }
+            ],
+            support: [
+                { text: 'Hörverstehen 🎧', value: 'hoeren', score: 0 },
+                { text: 'Leseverstehen 📖', value: 'lesen', score: 0 },
+                { text: 'Sprechen 💬', value: 'sprechen', score: 0 },
+                { text: 'Schreiben ✍️', value: 'schreiben', score: 0 },
+                { text: 'Grammatik 📐', value: 'grammatik', score: 0 },
+                { text: 'Wortschatz 📚', value: 'wortschatz', score: 0 }
+            ],
+            goals: [
+                { text: 'Konzentration 🎯', value: 'konzentration', score: 0 },
+                { text: 'Pünktlichkeit ⏰', value: 'puenktlichkeit', score: 0 },
+                { text: 'Übung zu Hause 🏠', value: 'uebung_zuhause', score: 0 },
+                { text: 'Lernen mit Klassenkameraden 👥', value: 'lernen_zusammen', score: 0 }
+            ],
+            learning_methods: [
+                { text: 'Videos 🎥', value: 'videos', score: 0 },
+                { text: 'Texte lesen 📖', value: 'texte', score: 0 },
+                { text: 'Musik hören 🎵', value: 'musik', score: 0 },
+                { text: 'Apps nutzen 📱', value: 'apps', score: 0 },
+                { text: 'Mit anderen sprechen 💬', value: 'sprechen', score: 0 },
+                { text: 'Übungen schreiben ✍️', value: 'schreiben', score: 0 }
+            ]
+        };
+
+        function initializeQuestions() {
+            for (let qId in questions) {
+                const question = questions[qId];
+                const container = document.getElementById(qId);
+                const options = optionTypes[question.type];
+                
+                options.forEach(option => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = option.text;
+                    btn.onclick = () => selectOption(qId, option.value, option.text, btn);
+                    container.appendChild(btn);
+                });
+            }
+        }
+
+        function selectOption(questionId, value, text, button) {
+            // Special handling for multiple choice questions (q25, q26, q27)
+            if (questionId === 'q25' || questionId === 'q26' || questionId === 'q27') {
+                // Toggle selection
+                button.classList.toggle('selected');
+                
+                // Get all selected options
+                const container = button.parentElement;
+                const selectedButtons = container.querySelectorAll('.option-btn.selected');
+                
+                if (selectedButtons.length > 0) {
+                    const values = [];
+                    const texts = [];
+                    selectedButtons.forEach(btn => {
+                        const index = Array.from(container.children).indexOf(btn);
+                        let optionType;
+                        if (questionId === 'q25') optionType = 'support';
+                        else if (questionId === 'q26') optionType = 'goals';
+                        else if (questionId === 'q27') optionType = 'learning_methods';
+                        
+                        values.push(optionTypes[optionType][index].value);
+                        texts.push(optionTypes[optionType][index].text);
+                    });
+                    answers[questionId] = { value: values.join(','), text: texts.join(', ') };
+                } else {
+                    // If nothing selected, remove answer
+                    delete answers[questionId];
+                }
+            } else {
+                // Single choice - remove selection from other buttons
+                const container = button.parentElement;
+                container.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+                // Select this button
+                button.classList.add('selected');
+                
+                // Store answer
+                answers[questionId] = { value: value, text: text };
+            }
+        }
+
+        function nextSection(section) {
+            // Validate section
+            if (section === 0) {
+                const name = document.getElementById('studentName').value.trim();
+                if (!name) {
+                    alert('Bitte gib deinen Namen ein!');
+                    return;
+                }
+                answers.name = name;
+            } else {
+                // Check if all questions in current section are answered
+                const sectionQuestions = getSectionQuestions(section);
+                const unanswered = sectionQuestions.find(q => !answers[q]);
+                if (unanswered) {
+                    alert('Bitte beantworte alle Fragen!');
+                    return;
+                }
+            }
+
+            // Hide current section
+            document.getElementById(`section${section}`).classList.remove('active');
+            
+            // Show next section
+            currentSection = section + 1;
+            document.getElementById(`section${currentSection}`).classList.add('active');
+            
+            // Update progress
+            updateProgress();
+            
+            // Show summary if last section
+            if (currentSection === totalSections) {
+                showSummary();
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function previousSection(section) {
+            // Hide current section
+            document.getElementById(`section${section}`).classList.remove('active');
+            
+            // Show previous section
+            currentSection = section - 1;
+            document.getElementById(`section${currentSection}`).classList.add('active');
+            
+            // Update progress
+            updateProgress();
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function getSectionQuestions(section) {
+            const sectionMap = {
+                1: ['q1', 'q2', 'q3'],
+                2: ['q4', 'q5', 'q6'],
+                3: ['q7', 'q8', 'q9'],
+                4: ['q10', 'q11', 'q12'],
+                5: ['q13', 'q14'],
+                6: ['q15', 'q16'],
+                7: ['q17', 'q18', 'q19'],
+                8: ['q20', 'q21', 'q22'],
+                9: ['q23', 'q24', 'q25', 'q26', 'q27']
+            };
+            return sectionMap[section] || [];
+        }
+
+        function updateProgress() {
+            const progress = (currentSection / totalSections) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showSummary() {
+            const summary = document.getElementById('summary');
+            summary.innerHTML = '<h3 style="color: #667eea; margin-bottom: 20px;">Deine Antworten:</h3>';
+            
+            const categories = [
+                { title: '🎧 Hörverstehen', questions: ['q1', 'q2', 'q3'] },
+                { title: '📖 Leseverstehen', questions: ['q4', 'q5', 'q6'] },
+                { title: '💬 Sprechen', questions: ['q7', 'q8', 'q9'] },
+                { title: '✍️ Schreiben', questions: ['q10', 'q11', 'q12'] },
+                { title: '📐 Artikel', questions: ['q13', 'q14'] },
+                { title: '🎯 Modalverben', questions: ['q15', 'q16'] },
+                { title: '🎯 Akkusativ/Dativ', questions: ['q17', 'q18', 'q19'] },
+                { title: '⏰ Präsens/Perfekt', questions: ['q20', 'q21', 'q22'] },
+                { title: '📚 Lernziele', questions: ['q23', 'q24', 'q25', 'q26', 'q27'] }
+            ];
+
+            categories.forEach(cat => {
+                summary.innerHTML += `<div style="margin-top: 20px;"><strong>${cat.title}</strong></div>`;
+                cat.questions.forEach(qId => {
+                    const answer = answers[qId];
+                    const question = questions[qId];
+                    summary.innerHTML += `
+                        <div class="summary-item">
+                            <span class="summary-label">${question.question}</span>
+                            <span class="summary-value">${answer.text}</span>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function downloadResults() {
+            const timestamp = new Date().toLocaleString('de-DE');
+            const date = new Date().toISOString().split('T')[0];
+            
+            // Kompakte statistische Übersicht für Lehrer
+            let content = `SELBSTEINSCHÄTZUNG DEUTSCH
+Datum: ${timestamp}
+Name: ${answers.name}
+
+=== STATISTISCHE ÜBERSICHT ===
+
+`;
+
+            // Berechne Durchschnittswerte für Kategorien
+            const categories = [
+                { title: 'Hörverstehen', questions: ['q1', 'q2', 'q3'] },
+                { title: 'Leseverstehen', questions: ['q4', 'q5', 'q6'] },
+                { title: 'Sprechen', questions: ['q7', 'q8', 'q9'] },
+                { title: 'Schreiben', questions: ['q10', 'q11', 'q12'] },
+                { title: 'Artikel', questions: ['q13', 'q14'] },
+                { title: 'Modalverben', questions: ['q15', 'q16'] },
+                { title: 'Akkusativ/Dativ', questions: ['q17', 'q18', 'q19'] },
+                { title: 'Präsens/Perfekt', questions: ['q20', 'q21', 'q22'] }
+            ];
+
+            categories.forEach(cat => {
+                let total = 0;
+                let count = 0;
+                cat.questions.forEach(qId => {
+                    if (answers[qId]) {
+                        const question = questions[qId];
+                        const answerValue = answers[qId].value;
+                        const options = optionTypes[question.type];
+                        const option = options.find(o => o.value === answerValue);
+                        if (option && option.score > 0) {
+                            total += option.score;
+                            count++;
+                        }
+                    }
+                });
+                const average = count > 0 ? (total / count).toFixed(1) : 'N/A';
+                const percentage = count > 0 ? ((total / (count * 5)) * 100).toFixed(0) : 'N/A';
+                content += `${cat.title}: ${average}/5.0 (${percentage}%)\n`;
+            });
+
+            content += `\n=== UNTERSTÜTZUNGSBEDARF ===\n`;
+            if (answers.q25) {
+                content += `${answers.q25.text}\n`;
+            }
+
+            content += `\n=== ZUKUNFTSZIELE ===\n`;
+            if (answers.q26) {
+                content += `${answers.q26.text}\n`;
+            }
+
+            content += `\n=== LERNMETHODEN ===\n`;
+            if (answers.q27) {
+                content += `Wodurch lerne ich gut: ${answers.q27.text}\n`;
+            }
+
+            content += `\n=== LERNVERHALTEN ===\n`;
+            content += `Lerne gerne Deutsch: ${answers.q23 ? answers.q23.text : 'N/A'}\n`;
+            content += `Übe zu Hause: ${answers.q24 ? answers.q24.text : 'N/A'}\n`;
+
+            content += `\n=== DETAILLIERTE ANTWORTEN ===\n\n`;
+            
+            categories.forEach(cat => {
+                content += `${cat.title}:\n`;
+                cat.questions.forEach(qId => {
+                    const answer = answers[qId];
+                    const question = questions[qId];
+                    if (answer) {
+                        content += `  - ${question.question}: ${answer.text}\n`;
+                    }
+                });
+                content += `\n`;
+            });
+
+            content += `\n=== DATENFORMAT FÜR STATISTIK (CSV) ===\n\n`;
+            content += `NAME;DATUM;FRAGE_ID;KATEGORIE;ANTWORT;ANTWORT_TEXT\n`;
+            
+            const categoryMap = {
+                q1: 'Hörverstehen', q2: 'Hörverstehen', q3: 'Hörverstehen',
+                q4: 'Leseverstehen', q5: 'Leseverstehen', q6: 'Leseverstehen',
+                q7: 'Sprechen', q8: 'Sprechen', q9: 'Sprechen',
+                q10: 'Schreiben', q11: 'Schreiben', q12: 'Schreiben',
+                q13: 'Artikel', q14: 'Artikel',
+                q15: 'Modalverben', q16: 'Modalverben',
+                q17: 'Akkusativ/Dativ', q18: 'Akkusativ/Dativ', q19: 'Akkusativ/Dativ',
+                q20: 'Präsens/Perfekt', q21: 'Präsens/Perfekt', q22: 'Präsens/Perfekt',
+                q23: 'Lernziele', q24: 'Lernziele', q25: 'Lernziele', q26: 'Lernziele', q27: 'Lernziele'
+            };
+
+            for (let qId in answers) {
+                if (qId !== 'name') {
+                    const answer = answers[qId];
+                    const category = categoryMap[qId] || 'Sonstiges';
+                    content += `${answers.name};${date};${qId};${category};${answer.value};${answer.text}\n`;
+                }
+            }
+
+            // Download als TXT-Datei
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Selbsteinschaetzung_${answers.name.replace(/\s/g, '_')}_${date}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert('✅ Datei wurde heruntergeladen! Bitte schicke sie an deinen Lehrer.');
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            initializeQuestions();
+            updateProgress();
+        };
+    </script>
+</body>
+</html>
